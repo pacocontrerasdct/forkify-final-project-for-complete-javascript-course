@@ -31,7 +31,7 @@ const createRecipeObject = function (data) {
 
 export const loadRecipe = async function (id) {
   try {
-    const data = await AJAX(`${API_URL}${id}?key=${API_KEY}`);
+    const data = await AJAX(`${API_URL}${id}?key=${FORKIFY_API_KEY}`);
     state.recipe = createRecipeObject(data);
     if (state.bookmarks.some(bookmarked => bookmarked.id === id))
       state.recipe.bookmarked = true;
@@ -45,7 +45,9 @@ export const loadRecipe = async function (id) {
 export const loadSearchResults = async function (query) {
   try {
     state.search.query = query;
-    const data = await AJAX(`${API_URL}?search=${query}&key=${API_KEY}`);
+    const data = await AJAX(
+      `${API_URL}?search=${query}&key=${FORKIFY_API_KEY}`
+    );
     state.search.results = data.data.recipes.map(recipe => {
       return {
         id: recipe.id,
@@ -140,7 +142,7 @@ export const uploadRecipe = async function (newRecipe) {
       image_url: image,
       ingredients,
     };
-    const data = await AJAX(`${API_URL}?key=${API_KEY}`, recipe);
+    const data = await AJAX(`${API_URL}?key=${FORKIFY_API_KEY}`, recipe);
     state.recipe = createRecipeObject(data);
     addBookmark(state.recipe);
   } catch (err) {
